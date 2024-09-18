@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Đặt Hàng</title>
+</head>
+<body>
+
+<h2>Thông Tin Khách Hàng</h2>
+
+<form id="orderForm">
+    <label for="name">Họ Tên:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="phone">Số Điện Thoại:</label><br>
+    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="Nhập số điện thoại 10 số" required><br><br>
+
+    <label for="address">Địa Chỉ:</label><br>
+    <input type="text" id="address" name="address" required><br><br>
+
+    <label for="color">Chọn Màu Sắc:</label><br>
+    <select id="color" name="color">
+        <option value="Vàng">Vàng</option>
+        <option value="Bạc">Bạc</option>
+    </select><br><br>
+
+    <button type="submit">Đặt Hàng</button>
+</form>
+
+<div id="output"></div>
+
+<script>
+    document.getElementById("orderForm").addEventListener("submit", function(event){
+        event.preventDefault();
+
+        let name = document.getElementById("name").value;
+        let phone = document.getElementById("phone").value;
+        let address = document.getElementById("address").value;
+        let color = document.getElementById("color").value;
+
+        // Gửi dữ liệu đến Google Sheets
+        fetch('YOUR_GOOGLE_SCRIPT_WEB_APP_URL', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'name': name,
+                'phone': phone,
+                'address': address,
+                'color': color
+            })
+        }).then(() => {
+            document.getElementById("output").innerHTML = "<h3>Thông tin đã được gửi!</h3>";
+        }).catch(() => {
+            document.getElementById("output").innerHTML = "<h3>Có lỗi xảy ra khi gửi thông tin!</h3>";
+        });
+    });
+</script>
+
+</body>
+</html>
